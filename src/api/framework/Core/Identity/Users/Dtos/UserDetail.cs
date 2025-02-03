@@ -18,4 +18,6 @@ public class UserDetail
     public string? PhoneNumber { get; set; }
 
     public Uri? ImageUrl { get; set; }
+
+    public string? Sex { get; set; }
 }

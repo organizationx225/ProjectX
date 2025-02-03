@@ -24,6 +24,7 @@ public partial class Users
     private bool _canExportUsers;
     private bool _canViewAuditTrails;
     private bool _canViewRoles;
+    protected bool loadingUsers = true;
 
     // Fields for editform
     protected string Password { get; set; } = string.Empty;
@@ -52,10 +53,12 @@ public partial class Users
                 new(user => user.FirstName,"First Name"),
                 new(user => user.LastName, "Last Name"),
                 new(user => user.UserName, "UserName"),
+                new(user => user.Sex, "Sex"),
                 new(user => user.Email, "Email"),
                 new(user => user.PhoneNumber, "PhoneNumber"),
                 new(user => user.EmailConfirmed, "Email Confirmation", Type: typeof(bool)),
                 new(user => user.IsActive, "Active", Type: typeof(bool))
+
             },
             idFunc: user => user.Id,
             loadDataFunc: async () => (await UsersClient.GetUsersListEndpointAsync()).ToList(),

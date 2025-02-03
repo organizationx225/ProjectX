@@ -14,7 +14,7 @@
             <MudMenuItem OnClick="(() => ViewAuditTrails(context.Id))">View Audit Trails</MudMenuItem>
         }
     </ExtraActions>
-
+    
     <EditFormContent>
         <MudItem xs="12" md="6">
             <MudTextField For="@(() => context.UserName)" @bind-Value="context.UserName" Label="User Name" />

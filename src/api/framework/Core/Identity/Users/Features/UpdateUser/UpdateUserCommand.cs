@@ -11,4 +11,6 @@ public class UpdateUserCommand : IRequest
     public string? Email { get; set; }
     public FileUploadCommand? Image { get; set; }
     public bool DeleteCurrentImage { get; set; }
+
+    public string ? Sex { get; set; }
 }

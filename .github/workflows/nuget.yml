@@ -16,7 +16,7 @@ jobs:
         name: setup nuget
         with:
           nuget-version: "latest"
-          nuget-api-key: ${{ secrets.NUGET_API_KEY }}
+          nuget-api-key: ${{ secrets.GHCR_PAT }}
       - name: generate package
         run: nuget pack FSH.StarterKit.nuspec -NoDefaultExcludes
       - name: publish package
