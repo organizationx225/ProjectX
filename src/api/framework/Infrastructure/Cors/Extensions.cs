@@ -15,7 +15,7 @@ public static class Extensions
             policy.AllowAnyHeader()
                 .AllowAnyMethod()
                 .AllowCredentials()
-                .WithOrigins(corsOptions.AllowedOrigins.ToArray())));
+                .SetIsOriginAllowed(origin => new Uri(origin).Host == "localhost")));
     }
 
     internal static IApplicationBuilder UseCorsPolicy(this IApplicationBuilder app)
