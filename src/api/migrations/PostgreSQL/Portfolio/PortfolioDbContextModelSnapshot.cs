@@ -74,6 +74,65 @@ namespace FSH.Starter.WebApi.Migrations.PostgreSQL.Portfolio
 
                     b.HasAnnotation("Finbuckle:MultiTenant", true);
                 });
+
+            modelBuilder.Entity("FSH.Starter.WebApi.Portfolio.Domain.Forecast", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("AssetId")
+                        .HasColumnType("uuid");
+
+                    b.Property<decimal>("ConfidenceLevel")
+                        .HasColumnType("numeric");
+
+                    b.Property<DateTimeOffset>("Created")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset?>("Deleted")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("DeletedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("LastModified")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("LastModifiedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<decimal>("PredictedValue")
+                        .HasColumnType("numeric");
+
+                    b.Property<DateTime>("PredictionDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AssetId");
+
+                    b.ToTable("Forecasts", "asset");
+                });
+
+            modelBuilder.Entity("FSH.Starter.WebApi.Portfolio.Domain.Forecast", b =>
+                {
+                    b.HasOne("FSH.Starter.WebApi.Portfolio.Domain.Asset", "Asset")
+                        .WithMany("Forecasts")
+                        .HasForeignKey("AssetId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Asset");
+                });
+
+            modelBuilder.Entity("FSH.Starter.WebApi.Portfolio.Domain.Asset", b =>
+                {
+                    b.Navigation("Forecasts");
+                });
 #pragma warning restore 612, 618
         }
     }

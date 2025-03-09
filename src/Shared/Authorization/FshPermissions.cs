@@ -45,8 +45,12 @@ public static class FshPermissions
         new("Export Brands", FshActions.Export, FshResources.Brands),
 
         //Assets
-        new ("Create Assets",FshActions.Create, FshResources.Assets),
-        new ("Create Assets",FshActions.View, FshResources.Assets),
+        new("Create Assets",FshActions.Create, FshResources.Assets),
+        new("Create Assets",FshActions.View, FshResources.Assets),
+        new("Search Assets",FshActions.Search, FshResources.Assets),
+        new("Update Assets", FshActions.Update, FshResources.Assets),
+        new("Delete Assets", FshActions.Delete, FshResources.Assets),
+        new("Export Assets", FshActions.Export, FshResources.Assets),
 
         //todos
         new("View Todos", FshActions.View, FshResources.Todos, IsBasic: true),

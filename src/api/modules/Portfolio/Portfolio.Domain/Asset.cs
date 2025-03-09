@@ -1,6 +1,8 @@
 ﻿using FSH.Framework.Core.Domain;
 using FSH.Framework.Core.Domain.Contracts;
 using FSH.Starter.WebApi.Portfolio.Domain.Events;
+using Portfolio.Domain;
+using Portfolio.Domain.Events.Forecast;
 
 
 namespace FSH.Starter.WebApi.Portfolio.Domain;
@@ -12,6 +14,9 @@ public class Asset : AuditableEntity, IAggregateRoot
     public decimal Value { get; private set; }
     public string Currency { get; private set; } = "USD";
     public DateTime LastUpdated { get; private set; } = DateTime.UtcNow;
+
+    private readonly List<Forecast> _forecasts = [];
+    public IReadOnlyCollection<Forecast> Forecasts => _forecasts.AsReadOnly();
 
     public static Asset Create(string type, decimal value, string currency)
     {
@@ -56,5 +61,22 @@ public class Asset : AuditableEntity, IAggregateRoot
         asset.QueueDomainEvent(new AssetUpdated() { Asset = asset });
 
         return asset;
+    }
+
+    public void AddForecast(DateTime predictionDate, decimal predictedValue, decimal confidenceLevel)
+    {
+        var forecast = Forecast.Create(Id, predictionDate, predictedValue, confidenceLevel);
+        _forecasts.Add(forecast);
+        this.QueueDomainEvent(new ForecastAddedToAsset() { Asset = this, Forecast = forecast });
+    }
+
+    public void RemoveForecast(Guid forecastId)
+    {
+        var forecast = _forecasts.FirstOrDefault(f => f.Id == forecastId);
+        if (forecast != null)
+        {
+            _forecasts.Remove(forecast);
+            this.QueueDomainEvent(new ForecastRemovedFromAsset() { Asset = this, ForecastId = forecastId });
+        }
     }
 }

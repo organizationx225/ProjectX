@@ -6,6 +6,7 @@ using FSH.Starter.WebApi.Portfolio.Domain;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using Portfolio.Domain;
 
 namespace FSH.Starter.WebApi.Portfolio.Infrastructure.Persistence;
 public sealed class PortfolioDbContext : FshDbContext
@@ -19,11 +20,19 @@ public sealed class PortfolioDbContext : FshDbContext
     }
 
     public DbSet<Asset> Assets { get; set; } = null!;
+    public DbSet<Forecast> Forecasts { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         ArgumentNullException.ThrowIfNull(modelBuilder);
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(PortfolioDbContext).Assembly);
         modelBuilder.HasDefaultSchema("asset");
+
+
+        modelBuilder.Entity<Asset>()
+            .HasMany(a => a.Forecasts)
+            .WithOne(f => f.Asset)
+            .HasForeignKey(f => f.AssetId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }
